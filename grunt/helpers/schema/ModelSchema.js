@@ -11,6 +11,7 @@ class ModelSchema extends GlobalsSchema {
    */
   getTranslatablePaths() {
     const paths = {};
+  
     this.traverse('', ({ description, next }, attributePath) => {
       switch (description.type) {
         case 'object':
@@ -28,22 +29,26 @@ class ModelSchema extends GlobalsSchema {
           }
           break;
         case 'string':
-           // check if attribute should be picked
-           let value = Boolean(description.translatable);
-           if (value === false) {
-             if (description.inputType === 'Asset:other') {
-               value = true; // Treat 'source' and 'src' as translatable
-             } else {
-               break; // Skip non-translatable strings
-             }
-           }
-          // add value to store
-          paths[attributePath + description.name + '/'] = value;
+          let value = false;
+          if (description.translatable) {
+            value = true;
+          } else if (description.inputType === 'Asset:other') {
+            value = true; // Treat 'src' as translatable
+          } else if (description.inputType === 'Text' && description?.validators?.includes('url')) {
+            // Treat 'source' as translatable
+            value = true;
+          }
+  
+          if (value) {
+            paths[attributePath + description.name + '/'] = true;
+          }
           break;
       }
     }, '/');
+  
     return Object.keys(paths);
   }
+  
 
 }
 
