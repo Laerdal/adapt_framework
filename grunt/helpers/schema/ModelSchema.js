@@ -28,11 +28,15 @@ class ModelSchema extends GlobalsSchema {
           }
           break;
         case 'string':
-          // check if attribute should be picked
-          const value = Boolean(description.translatable);
-          if (value === false) {
-            break;
-          }
+           // check if attribute should be picked
+           let value = Boolean(description.translatable);
+           if (value === false) {
+             if (description.inputType === 'Asset:other') {
+               value = true; // Treat 'source' and 'src' as translatable
+             } else {
+               break; // Skip non-translatable strings
+             }
+           }
           // add value to store
           paths[attributePath + description.name + '/'] = value;
           break;
