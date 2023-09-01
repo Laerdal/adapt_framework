@@ -32,10 +32,9 @@ class ModelSchema extends GlobalsSchema {
           let value = false;
           if (description.translatable) {
             value = true;
-          } else if (description.inputType === 'Asset:other') {
-            value = true; // Treat 'src' as translatable
+          } else if (/^Asset:/.test(description.inputType)) {
+            value = true; 
           } else if (description.inputType === 'Text' && description?.validators?.includes('url')) {
-            // Treat 'source' as translatable
             value = true;
           }
   
