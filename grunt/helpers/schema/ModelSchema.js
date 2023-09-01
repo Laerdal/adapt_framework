@@ -10,7 +10,7 @@ class ModelSchema extends GlobalsSchema {
    * @returns {[string]}
    */
   getTranslatablePaths() {
-    const paths = {};  
+    const paths = {};
     this.traverse('', ({ description, next }, attributePath) => {
       switch (description.type) {
         case 'object':
@@ -45,7 +45,7 @@ class ModelSchema extends GlobalsSchema {
     }, '/');
   
     return Object.keys(paths);
-  }  
+  }
 
 }
 
