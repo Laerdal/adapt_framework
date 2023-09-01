@@ -42,8 +42,7 @@ class ModelSchema extends GlobalsSchema {
           }
           break;
       }
-    }, '/');
-  
+    }, '/');  
     return Object.keys(paths);
   }
 
