@@ -28,13 +28,18 @@ class ModelSchema extends GlobalsSchema {
           }
           break;
         case 'string':
-          // check if attribute should be picked
-          const value = Boolean(description.translatable);
-          if (value === false) {
-            break;
+          let value = false;
+          if (description.translatable) {
+            value = true;
+          } else if (/^Asset:/.test(description.inputType)) {
+            value = true; 
+          } else if (description.inputType === 'Text' && description?.validators?.includes('url')) {
+            value = true;
           }
-          // add value to store
-          paths[attributePath + description.name + '/'] = value;
+  
+          if (value) {
+            paths[attributePath + description.name + '/'] = true;
+          }
           break;
       }
     }, '/');
