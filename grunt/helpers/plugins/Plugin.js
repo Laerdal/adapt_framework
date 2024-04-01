@@ -1,3 +1,4 @@
+const semver = require('semver');
 const globs = require('globs');
 const JSONFile = require('../lib/JSONFile');
 
@@ -62,6 +63,9 @@ class Plugin {
       // assume path name is also plugin name, this shouldn't be necessary
       this.warn(`Plugin folder name ${pathDerivedName} does not match package name ${packageName}.`);
     }
+    if (this.requiredFramework && !this.isFrameworkCompatible) {
+      this.warn(`Required framework version (${this.requiredFramework}) for plugin ${packageName} not satisfied by current framework version (${this.framework.version}).`);
+    }
     return this;
   }
 
@@ -96,6 +100,18 @@ class Plugin {
     return this.packageJSONFile.firstFileItem.item.version;
   }
 
+  /** @returns {string} */
+  get requiredFramework() {
+    return this.packageJSONFile.firstFileItem.item.framework;
+  }
+
+  /** @returns {boolean} */
+  get isFrameworkCompatible() {
+    if (!this.framework || !this.framework.version) return true;
+
+    return semver.satisfies(this.framework.version, this.requiredFramework);
+  }
+
   /**
    * Returns the plugin type name.
    * @returns {string}
@@ -109,7 +125,7 @@ class Plugin {
     const typeKeyName = ['component', 'extension', 'menu', 'theme'];
     const foundType = configKeys.find(key => typeKeyName.includes(key));
     if (!foundType) {
-      throw new Error('Unknown plugin type');
+      throw new Error(`Unknown plugin type for ${this.name}`);
     }
     return foundType;
   }
