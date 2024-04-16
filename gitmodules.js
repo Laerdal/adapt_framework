@@ -67,6 +67,8 @@ for (const subPath in modules) {
   });
 }
 
+console.log(`before init and update submodule`);
+
 // initilize & update submodules
 for (const subPath in modules) {
   const dirPath = path.join(__dirname, subPath);
