@@ -65,26 +65,15 @@ for (const subPath in modules) {
     env,
     stdio: 'inherit'
   });
-}
-
-console.log(`before init and update submodule`);
-
-// initilize & update submodules
-for (const subPath in modules) {
-  const dirPath = path.join(__dirname, subPath);
-  const url = modules[subPath].url;
-  const hasPackageJSON = fs.existsSync(path.join(dirPath, 'package.json'));
-  if (hasPackageJSON) continue;
-  console.log(`Cleaning ${subPath}`);
-  // rmSync was introduced in node v14.14.0
-  fs[fs.rmSync ? 'rmSync' : 'rmdirSync'](dirPath, { recursive: true, force: true });
-  console.log(`Initilize & updating submodule ${url} into ${subPath}`);
+  console.log(`Initilize & updating submodule`);
   ChildProcess.execSync(`git submodule init && git submodule update`, {
     cwd: __dirname,
     env,
     stdio: 'inherit'
   });
 }
+
+console.log(`before init and update submodule`);
 
 // Ensure submodules are on the appropriate branch
 for (const subPath in modules) {
