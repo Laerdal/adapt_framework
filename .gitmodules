@@ -2,4 +2,5 @@
   path = src/core
   branch = master
   url = https://github.com/Laerdal/adapt-contrib-core
+  installBranch = master
   update = merge
