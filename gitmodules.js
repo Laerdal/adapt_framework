@@ -65,12 +65,6 @@ for (const subPath in modules) {
     env,
     stdio: 'inherit'
   });
-  console.log(`Initilize & updating submodule`);
-  ChildProcess.execSync(`git submodule init && git submodule update`, {
-    cwd: __dirname,
-    env,
-    stdio: 'inherit'
-  });
 }
 
 console.log(`before init and update submodule`);
