@@ -67,8 +67,6 @@ for (const subPath in modules) {
   });
 }
 
-console.log(`before init and update submodule`);
-
 // Ensure submodules are on the appropriate branch
 for (const subPath in modules) {
   const dirPath = path.join(__dirname, subPath);
